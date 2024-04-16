@@ -56,7 +56,7 @@ Schets op basis van de wireflow een UML diagram met pseudo-code voor het client-
 
 
 
-### Bouwen
+## Bouwen
 In de bouwfase realiseer je de beslissingen uit de ontwerpfase. 
 
 ### Inrichten ontwikkelomgeving
