@@ -68,6 +68,7 @@ app.post('/post:slug', (req, res) => {
             }),
         })
     })
+    res.redirect(301, `/post/${req.params.slug}`)
 })
 
 // catogory page
