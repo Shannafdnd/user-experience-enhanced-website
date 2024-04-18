@@ -47,17 +47,17 @@ app.get('/author/:id', (req, res) => {
 })
 
 // Post route
-app.get('/post:slug', (req, res) => {
+app.get('/post/:slug', (req, res) => {
     Promise.all([
         fetchJson(`${apiUrl}posts?slug=${req.params.slug}`),
         fetchJson(`${directus_url}?filter[slug][_eq]=${req.params.slug}`)
     ]).then(([posts, {data}]) => {
-        res.render('post', {posts: posts[0], shares: data[0]?.shares ?? 0, categories}) // ?. en ?? uitleg links onderaan.
+        res.render('post', {post: posts[0], shares: data[0]?.shares ?? 0, categories}) // ?. en ?? uitleg links onderaan.
     })
 })
 
 // Share route
-app.post('/post:slug', (req, res) => {
+app.post('/post/:slug', (req, res) => {
     fetchJson(`${directus_url}?filter[slug][_eq]=${req.params.slug}`).then(({data}) => {
         fetchJson(`${directus_url}/${data[0]?.id ? data[0].id : ''}`, {
             method: data[0]?.id ? 'PATCH' : 'POST',
