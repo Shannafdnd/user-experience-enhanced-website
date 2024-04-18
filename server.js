@@ -52,7 +52,7 @@ app.get('/post/:slug', (req, res) => {
         fetchJson(`${apiUrl}posts?slug=${req.params.slug}`),
         fetchJson(`${directus_url}?filter[slug][_eq]=${req.params.slug}`)
     ]).then(([posts, {data}]) => {
-        res.render('post', {post: posts[0], shares: data[0]?.shares ?? 0, categories}) // ?. en ?? uitleg links onderaan.
+        res.render('article', {post: posts[0], shares: data[0]?.shares ?? 0, categories}) // ?. en ?? uitleg links onderaan.
     })
 })
 

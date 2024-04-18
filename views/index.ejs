@@ -1,34 +1,21 @@
 <%- include('./partials/head') %>
-<title>Red Pers</title>
+    <title>Red Pers - Podium voor de Journalistiek</title>
 </head>
 
-<%- include('./partials/header') %>
 <body>
-
+    <%- include('./partials/header') %>
     <main>
-
         <section class="posts front-page">
-        <%
-            posts[0]
-            .forEach((post, i) => {
-                %>
-                <article class="post">
-                    <a href="/post/<%= post.slug %>" class="article-link">
-                        <img src="<%= post.yoast_head_json.og_image[0].url %>" height="<%= post.yoast_head_json.og_image[0].height %>" width="<%= post.yoast_head_json.og_image[0].width %>">
-                    </a>
-                    <a href="/post/<%= post.slug %>" class="article-link">
-                        <h3><%- post.title.rendered %></h3>
-                        <%- i === 0 ? post.excerpt.rendered : "" /* if this is the first post, also show the excerpt */ %>
-                    </a>
-                    <a class="author" href="/author/<%= post.author %>"><%= post.yoast_head_json.author %></a>
-                </article>
-                <%
-            })
-        %>
+            <%
+                posts[0]
+                .forEach((post, i) => {
+                    %>
+                        <%- include('./partials/post', {post, showExerpt: i == 0})  /* if this is the first post, also show the excerpt */ %>
+                    <%
+                })
+            %>
         </section>
-        <%
-            categories
-            .forEach((category, i) => {/* De 'i' staat voor index of iteration, hiermee kunnen we de matchende array van posts vinden */ %>
+            <% categories.forEach((category, i) => {/* De 'i' staat voor index of iteration, hiermee kunnen we de matchende array van posts vinden */ %>
                 <section class="category">
                     <h2><%= category.name %></h2>
                     <div class="posts">
@@ -36,20 +23,12 @@
                             posts[i + 1] // We voegen hier 1 aan toe om de eerste array van posts over te slaan
                             .forEach((post) => {
                                 %>
-                                <article class="post">
-                                    <a href="/post/<%= post.slug %>" class="article-link">
-                                        <img src="<%= post.yoast_head_json.og_image[0].url %>"></img>
-                                        <h3><%- post.title.rendered %></h3>
-                                    </a>
-                                    <a class="author" href="/author/<%= post.author %>"><%= post.yoast_head_json.author %></a>
-                                </article>
+                                    <%- include('./partials/post', {post, showExerpt: false}) %>
                                 <%
                             })
                         %>
                     </div>
                 </section>
-            <%})
-        %>
+            <%})%>
     </main>
-
-    <%- include('./partials/footer') %>
+<%- include('./partials/footer') %>
