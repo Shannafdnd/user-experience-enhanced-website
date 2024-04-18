@@ -59,16 +59,17 @@ app.get('/post/:slug', (req, res) => {
 // Share route
 app.post('/post/:slug', (req, res) => {
     fetchJson(`${directus_url}?filter[slug][_eq]=${req.params.slug}`).then(({data}) => {
-        fetchJson(`${directus_url}/${data[0]?.id ? data[0].id : ''}`, {
+        fetchJson(`${directus_url}/${data[0]?.id ?? ''}`, {
             method: data[0]?.id ? 'PATCH' : 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 slug: req.params.slug,
-                shares: data[0]?.shares ?? 0 + 1,
+                shares: (data[0]?.shares ?? 0) + 1,
             }),
-        })
+        }).then(() => {
+            res.redirect(301, `/post/${req.params.slug}`);
+        });
     })
-    res.redirect(301, `/post/${req.params.slug}`)
 })
 
 // catogory page
