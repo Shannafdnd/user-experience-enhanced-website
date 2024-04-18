@@ -6,7 +6,6 @@ const alertContainer = document.getElementById("alert-container");
 const alertMessage = document.getElementById("alert-message");
 
 menuButton.addEventListener("click", () => {
-    console.log("x")
     nav.classList.toggle("closed");
 })
 
@@ -17,8 +16,8 @@ function betterAlert(message) { // Deze functie laat een custom alert zien
 }
 
 function share(e) { // e is event
-    e.preventDefault(); // niet refreshen
-    fetch(window.top.location, {method: "POST"}); // ipv daarvan in de achtergrond post request sturen
+    e.preventDefault(); 
+    fetch(window.top.location, {method: "POST"});
     sharesCounter.innerText++; // 1 bij de share counter optellen
 
     if (navigator.share) { // deze functie wordt niet door elke browser ondersteunt
