@@ -3,17 +3,6 @@ import express from 'express'
 import fetchJson from './helpers/fetch-json.js'
 
 const app = express();
-
-app.set('view engine', 'ejs')
-app.set('views', './views')
-app.set('port', process.env.PORT || 8000)
-app.use(express.static('./public'))
-app.use(express.urlencoded({extended: true}))
-app.listen(app.get('port'), () => {
-  console.log(`Application started on http://localhost:${app.get('port')}`)
-})
-
-//*** Data ***
 const apiUrl = 'https://redpers.nl/wp-json/wp/v2/'
 const directus_url = 'https://fdnd-agency.directus.app/items/redpers_shares'
 const categories = [
@@ -26,6 +15,15 @@ const categories = [
   {"id": 63, "name": "Politiek", "slug": "politiek"},
   {"id": 94, "name": "Wetenshap", "slug": "wetenschap"},
 ];
+
+app.set('view engine', 'ejs')
+app.set('views', './views')
+app.set('port', process.env.PORT || 8000)
+app.use(express.static('./public'))
+app.use(express.urlencoded({extended: true}))
+app.listen(app.get('port'), () => {
+  console.log(`Application started on http://localhost:${app.get('port')}`)
+})
 
 // *** Routes ***
 

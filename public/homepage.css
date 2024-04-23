@@ -1,0 +1,49 @@
+main {
+    margin: 1rem;
+    margin-top: 15rem;
+}
+
+.posts {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+
+    .post {
+        border: var(--border);
+        max-width: 30rem;
+        height: 33rem;
+        background-color: white;
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+    
+        .article-link {
+            display: block;
+            width: 100%;
+        }
+
+        img {
+            width: 100%;
+            height: 15rem;
+            object-fit: cover;
+            border-bottom: var(--border);
+        }
+
+        .author {
+            padding: 1rem;
+            display: block;
+            font-size: 0.7rem;
+            font-weight: 700;
+            border-top: var(--border);
+            margin-top: auto;
+        }
+
+        h3 {
+            padding-left: 1rem;
+            font-size: x-large;
+            font-weight: 1000;
+        }
+    }
+}
