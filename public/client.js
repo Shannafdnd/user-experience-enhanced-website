@@ -1,8 +1,9 @@
-const nav = document.querySelector("nav.categories-nav");
-const menuButton = document.querySelector(".menu-button");
-const sharesCounter = document.getElementById("shares");
-const alertContainer = document.getElementById("alert-container");
-const alertMessage = document.getElementById("alert-message");
+const 
+    nav = document.querySelector("nav.categories-nav"),
+    menuButton = document.querySelector(".menu-button"),
+    sharesCounter = document.getElementById("shares"),
+    alertContainer = document.getElementById("alert-container"),
+    alertMessage = document.getElementById("alert-message");
 
 menuButton.addEventListener("click", () => {
     nav.classList.toggle("closed");
@@ -15,7 +16,6 @@ function betterAlert(message) { // Deze functie laat een custom alert zien
 }
 
 function share(event) {
-    event.preventDefault(); 
     fetch(window.top.location, {method: "POST"});
     sharesCounter.innerText++; // 1 bij de share counter optellen
 
@@ -25,6 +25,7 @@ function share(event) {
         navigator.clipboard.writeText(window.top.location);
         betterAlert("URL Gekopieërd!")
     }
+    event.preventDefault(); 
 }
 
 // Bronnen

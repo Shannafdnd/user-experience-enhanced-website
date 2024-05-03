@@ -2,28 +2,26 @@
 import express from 'express'
 import fetchJson from './helpers/fetch-json.js'
 
-const app = express();
-const apiUrl = 'https://redpers.nl/wp-json/wp/v2/'
-const directus_url = 'https://fdnd-agency.directus.app/items/redpers_shares'
-const categories = [
-  {"id": 9, "name": "Binnenland", "slug": "binnenland"},
-  {"id": 1010, "name": "Buitenland", "slug": "buitenland"}, 
-  {"id": 7164, "name": "Column", "slug": "column"},
-  {"id": 6, "name": "Economie", "slug": "economie"},
-  {"id": 4, "name": "Kunst & Media", "slug": "kunst-media"},
-  {"id": 3211, "name": "Podcasts", "slug": "podcast"},
-  {"id": 63, "name": "Politiek", "slug": "politiek"},
-  {"id": 94, "name": "Wetenshap", "slug": "wetenschap"},
-];
+const 
+    app = express(),
+    apiUrl = 'https://redpers.nl/wp-json/wp/v2/',
+    directus_url = 'https://fdnd-agency.directus.app/items/redpers_shares',
+    categories = [
+        {"id": 9, "name": "Binnenland", "slug": "binnenland"},
+        {"id": 1010, "name": "Buitenland", "slug": "buitenland"}, 
+        {"id": 7164, "name": "Column", "slug": "column"},
+        {"id": 6, "name": "Economie", "slug": "economie"},
+        {"id": 4, "name": "Kunst & Media", "slug": "kunst-media"},
+        {"id": 3211, "name": "Podcasts", "slug": "podcast"},
+        {"id": 63, "name": "Politiek", "slug": "politiek"},
+        {"id": 94, "name": "Wetenshap", "slug": "wetenschap"},
+    ];
 
 app.set('view engine', 'ejs')
 app.set('views', './views')
 app.set('port', process.env.PORT || 8000)
 app.use(express.static('./public'))
 app.use(express.urlencoded({extended: true}))
-app.listen(app.get('port'), () => {
-  console.log(`Application started on http://localhost:${app.get('port')}`)
-})
 
 // *** Routes ***
 
@@ -84,6 +82,10 @@ app.get('/categorie/:slug', (req, res) => {
     ]).then(([posts, category]) => { 
 		res.render('category', {posts, category, categories});
 	})
+})
+
+app.listen(app.get('port'), () => {
+    console.log(`Application started on http://localhost:${app.get('port')}`)
 })
 
 // *** Bronnen en uitleg ***
