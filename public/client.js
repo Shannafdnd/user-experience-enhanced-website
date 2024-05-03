@@ -2,7 +2,7 @@ const
     nav = document.querySelector("nav.categories-nav"),
     menuButton = document.querySelector(".menu-button"),
     sharesCounter = document.getElementById("shares"),
-    alertContainer = document.getElementById("alert-container"),
+    alertDialog = document.getElementById("alert-dialog"),
     alertMessage = document.getElementById("alert-message");
 
 menuButton.addEventListener("click", () => {
@@ -10,9 +10,9 @@ menuButton.addEventListener("click", () => {
 })
 
 function betterAlert(message) { // Deze functie laat een custom alert zien
-    alertContainer.classList.remove("hidden");
+    alertDialog.show()
     alertMessage.innerText = message;
-    setTimeout(() => alertContainer.classList.add("hidden"), 2000);
+    setTimeout(() => alertDialog.close(), 2000);
 }
 
 function share(event) {
