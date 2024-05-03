@@ -29,10 +29,13 @@ app.listen(app.get('port'), () => {
 
 //Index route
 app.get('/', (_, res) => {
-    Promise.all( //Promise.all uitleg onderaan
-        [fetchJson(`${apiUrl}posts?per_page=4`)]
-        .concat(categories.map(category => fetchJson(`${apiUrl}posts?per_page=3&categories=${category.id}`))) //.concat voegt 2 arrays samen. .map maakt een array van promises van de array van categories.
-    ).then(posts => { // posts is een array van arrays van posts.
+    const fetchRequests = [fetchJson(`${apiUrl}posts?per_page=4`)]; // de 4 meest recente posts
+    
+    categories.forEach((category) => { // voeg voor elke category een extra fetch request toe
+        fetchRequests.push(fetchJson(`${apiUrl}posts?per_page=3&categories=${category.id}`)); // de 3 meest recente posts van elke categorie
+    });
+
+    Promise.all(fetchRequests).then(posts => {  // Promise.all uitleg onderaan. posts is een array van arrays van posts.
         res.render('index', {posts, categories})
     })
 })
@@ -49,20 +52,21 @@ app.get('/post/:slug', (req, res) => {
     Promise.all([
         fetchJson(`${apiUrl}posts?slug=${req.params.slug}`),
         fetchJson(`${directus_url}?filter[slug][_eq]=${req.params.slug}`)
-    ]).then(([posts, {data}]) => {
-        res.render('article', {post: posts[0], shares: data[0]?.shares ?? 0, categories}) // ?. en ?? uitleg links onderaan.
+    ]).then(([[post], {data}]) => {
+        res.render('article', {post, shares: data[0]?.shares || 0, categories});
     })
 })
 
 // Share route
 app.post('/post/:slug', (req, res) => {
+    // Dit moet 1 voor 1, want we moeten eerst weten hoevaak de post is gedeeld voordat we daar 1 bij optellen
     fetchJson(`${directus_url}?filter[slug][_eq]=${req.params.slug}`).then(({data}) => {
-        fetchJson(`${directus_url}/${data[0]?.id ?? ''}`, {
+        fetchJson(`${directus_url}/${data[0]?.id ? data[0].id : ''}`, {
             method: data[0]?.id ? 'PATCH' : 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 slug: req.params.slug,
-                shares: (data[0]?.shares ?? 0) + 1,
+                shares: data.length > 0 ? data[0].shares + 1 : 1,
             }),
         }).then(() => {
             res.redirect(301, `/post/${req.params.slug}`);
@@ -74,7 +78,10 @@ app.post('/post/:slug', (req, res) => {
 app.get('/categorie/:slug', (req, res) => {
 	const category = categories.find((category) => category.slug == req.params.slug);
 	// Vind de categorie, waarvan de slug gelijk is aan de aangevraagde slug.
-	Promise.all([fetchJson(`${apiUrl}posts?categories=${category.id}`), fetchJson(apiUrl+ 'categories?slug=' + req.params.slug)]).then(([posts, category]) =>{ 
+	Promise.all([
+        fetchJson(`${apiUrl}posts?categories=${category.id}`), 
+        fetchJson(apiUrl+ 'categories?slug=' + req.params.slug)
+    ]).then(([posts, category]) => { 
 		res.render('category', {posts, category, categories});
 	})
 })
@@ -83,4 +90,3 @@ app.get('/categorie/:slug', (req, res) => {
 
 // Promise all zorgt ervoor dat je verschillende fetchjson requests tegelijk kan doen, door een grote belofte te maken van een lijst kleinere beloftes. https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise#promise_concurrency
 // ?. : https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining
-// ?? : https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Nullish_coalescing 

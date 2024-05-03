@@ -1,7 +1,6 @@
 const nav = document.querySelector("nav.categories-nav");
 const menuButton = document.querySelector(".menu-button");
 const sharesCounter = document.getElementById("shares");
-const link = encodeURI(window.location.href);
 const alertContainer = document.getElementById("alert-container");
 const alertMessage = document.getElementById("alert-message");
 
@@ -15,8 +14,8 @@ function betterAlert(message) { // Deze functie laat een custom alert zien
     setTimeout(() => alertContainer.classList.add("hidden"), 2000);
 }
 
-function share(e) { // e is event
-    e.preventDefault(); 
+function share(event) {
+    event.preventDefault(); 
     fetch(window.top.location, {method: "POST"});
     sharesCounter.innerText++; // 1 bij de share counter optellen
 

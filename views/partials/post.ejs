@@ -1,6 +1,6 @@
 <article class="post">
     <a href="/post/<%= post.slug %>" class="article-link">
-        <img src="<%= post.yoast_head_json.og_image[0].url %>" height="<%= post.yoast_head_json.og_image[0].height %>" width="<%= post.yoast_head_json.og_image[0].width %>">
+        <img loading="lazy" src="<%= post.yoast_head_json.og_image[0].url %>" height="<%= post.yoast_head_json.og_image[0].height %>" width="<%= post.yoast_head_json.og_image[0].width %>">
     </a>
     <a href="/post/<%= post.slug %>" class="article-link">
         <h3><%- post.title.rendered %></h3>
