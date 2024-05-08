@@ -78,10 +78,18 @@ app.get('/categorie/:slug', (req, res) => {
 	// Vind de categorie, waarvan de slug gelijk is aan de aangevraagde slug.
 	Promise.all([
         fetchJson(`${apiUrl}posts?categories=${category.id}`), 
-        fetchJson(apiUrl+ 'categories?slug=' + req.params.slug)
+        fetchJson(`${apiUrl}categories?slug=${req.params.slug}`)
     ]).then(([posts, category]) => { 
 		res.render('category', {posts, category, categories});
 	})
+})
+
+// Search
+app.get('/search', (req, res) => {
+    const searchterm = req.query.q;
+    fetchJson(`${apiUrl}posts?search=${searchterm}`).then((posts) => {
+        res.render('search', {posts, categories, searchterm})
+    })
 })
 
 app.listen(app.get('port'), () => {

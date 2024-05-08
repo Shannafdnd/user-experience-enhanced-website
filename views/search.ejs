@@ -1,0 +1,20 @@
+<%- include('./partials/head') %>
+    <title>Red Pers - Zoeken</title>
+</head>
+
+<body>
+    <%- include('./partials/header') %>
+    <main>
+        <h2>Zoekresultaten voor: <%= searchterm %></h2>
+        <section class="posts">
+            <%
+                posts
+                .forEach((post) => {
+                    %>
+                        <%- include('./partials/post', {post, showExerpt: false}) %>
+                    <%
+                })
+            %>
+        </section>
+    </main>
+<%- include('./partials/footer') %>
